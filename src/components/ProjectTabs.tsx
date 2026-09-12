@@ -14,7 +14,7 @@ export function ProjectHeader({
 }: {
   projectId: string;
   cliente: string;
-  subtitle?: string | null;
+  subtitle?: string | null | undefined;
 }) {
   return (
     <div className="mb-6 space-y-4">

@@ -11,7 +11,7 @@ export function AppShell({
   userLabel,
 }: {
   children: ReactNode;
-  userLabel?: string | null;
+  userLabel?: string | null | undefined;
 }) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();

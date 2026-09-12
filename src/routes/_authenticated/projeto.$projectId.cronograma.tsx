@@ -384,7 +384,7 @@ function SummaryCard({
 }: {
   label: string;
   value: string;
-  tone?: "danger";
+  tone?: "danger" | undefined;
 }) {
   return (
     <div className="rounded-lg border bg-card p-4">
