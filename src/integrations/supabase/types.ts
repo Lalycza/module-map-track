@@ -14,7 +14,231 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      log_entries: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          data_reuniao: string
+          hora_reuniao: string | null
+          id: string
+          observacoes: string | null
+          participantes: string | null
+          pauta: string | null
+          project_id: string
+          proximo_treinamento: string | null
+          tarefa_cliente: string | null
+          tarefa_hpro: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          data_reuniao: string
+          hora_reuniao?: string | null
+          id?: string
+          observacoes?: string | null
+          participantes?: string | null
+          pauta?: string | null
+          project_id: string
+          proximo_treinamento?: string | null
+          tarefa_cliente?: string | null
+          tarefa_hpro?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          data_reuniao?: string
+          hora_reuniao?: string | null
+          id?: string
+          observacoes?: string | null
+          participantes?: string | null
+          pauta?: string | null
+          project_id?: string
+          proximo_treinamento?: string | null
+          tarefa_cliente?: string | null
+          tarefa_hpro?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "log_entries_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      modules: {
+        Row: {
+          area: string | null
+          created_at: string
+          created_by: string | null
+          data_homologacao: string | null
+          id: string
+          nome: string
+          observacoes: string | null
+          project_id: string
+          responsavel_cliente: string | null
+          responsavel_hpro: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          area?: string | null
+          created_at?: string
+          created_by?: string | null
+          data_homologacao?: string | null
+          id?: string
+          nome: string
+          observacoes?: string | null
+          project_id: string
+          responsavel_cliente?: string | null
+          responsavel_hpro?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          area?: string | null
+          created_at?: string
+          created_by?: string | null
+          data_homologacao?: string | null
+          id?: string
+          nome?: string
+          observacoes?: string | null
+          project_id?: string
+          responsavel_cliente?: string | null
+          responsavel_hpro?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "modules_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          nome: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id: string
+          nome?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          nome?: string
+        }
+        Relationships: []
+      }
+      project_stages: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          data_conclusao: string | null
+          data_inicio: string | null
+          data_prevista: string | null
+          descricao: string | null
+          id: string
+          nome: string
+          ordem: number
+          project_id: string
+          responsavel: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          data_conclusao?: string | null
+          data_inicio?: string | null
+          data_prevista?: string | null
+          descricao?: string | null
+          id?: string
+          nome: string
+          ordem?: number
+          project_id: string
+          responsavel?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          data_conclusao?: string | null
+          data_inicio?: string | null
+          data_prevista?: string | null
+          descricao?: string | null
+          id?: string
+          nome?: string
+          ordem?: number
+          project_id?: string
+          responsavel?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_stages_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      projects: {
+        Row: {
+          arquivado: boolean
+          cliente: string
+          created_at: string
+          created_by: string | null
+          data_inicio: string | null
+          descricao: string | null
+          id: string
+          previsao_conclusao: string | null
+          responsavel: string | null
+          updated_at: string
+        }
+        Insert: {
+          arquivado?: boolean
+          cliente: string
+          created_at?: string
+          created_by?: string | null
+          data_inicio?: string | null
+          descricao?: string | null
+          id?: string
+          previsao_conclusao?: string | null
+          responsavel?: string | null
+          updated_at?: string
+        }
+        Update: {
+          arquivado?: boolean
+          cliente?: string
+          created_at?: string
+          created_by?: string | null
+          data_inicio?: string | null
+          descricao?: string | null
+          id?: string
+          previsao_conclusao?: string | null
+          responsavel?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
