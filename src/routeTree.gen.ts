@@ -14,6 +14,8 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedProjetosRouteImport } from './routes/_authenticated/projetos'
 import { Route as AuthenticatedProjetoProjectIdCronogramaRouteImport } from './routes/_authenticated/projeto.$projectId.cronograma'
+import { Route as AuthenticatedProjetoProjectIdDiarioRouteImport } from './routes/_authenticated/projeto.$projectId.diario'
+import { Route as AuthenticatedProjetoProjectIdModulosRouteImport } from './routes/_authenticated/projeto.$projectId.modulos'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,18 +42,34 @@ const AuthenticatedProjetoProjectIdCronogramaRoute =
     path: '/projeto/$projectId/cronograma',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedProjetoProjectIdDiarioRoute =
+  AuthenticatedProjetoProjectIdDiarioRouteImport.update({
+    id: '/projeto/$projectId/diario',
+    path: '/projeto/$projectId/diario',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedProjetoProjectIdModulosRoute =
+  AuthenticatedProjetoProjectIdModulosRouteImport.update({
+    id: '/projeto/$projectId/modulos',
+    path: '/projeto/$projectId/modulos',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/projetos': typeof AuthenticatedProjetosRoute
   '/projeto/$projectId/cronograma': typeof AuthenticatedProjetoProjectIdCronogramaRoute
+  '/projeto/$projectId/diario': typeof AuthenticatedProjetoProjectIdDiarioRoute
+  '/projeto/$projectId/modulos': typeof AuthenticatedProjetoProjectIdModulosRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/projetos': typeof AuthenticatedProjetosRoute
   '/projeto/$projectId/cronograma': typeof AuthenticatedProjetoProjectIdCronogramaRoute
+  '/projeto/$projectId/diario': typeof AuthenticatedProjetoProjectIdDiarioRoute
+  '/projeto/$projectId/modulos': typeof AuthenticatedProjetoProjectIdModulosRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -60,12 +78,26 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/projetos': typeof AuthenticatedProjetosRoute
   '/_authenticated/projeto/$projectId/cronograma': typeof AuthenticatedProjetoProjectIdCronogramaRoute
+  '/_authenticated/projeto/$projectId/diario': typeof AuthenticatedProjetoProjectIdDiarioRoute
+  '/_authenticated/projeto/$projectId/modulos': typeof AuthenticatedProjetoProjectIdModulosRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/projetos' | '/projeto/$projectId/cronograma'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/projetos'
+    | '/projeto/$projectId/cronograma'
+    | '/projeto/$projectId/diario'
+    | '/projeto/$projectId/modulos'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/projetos' | '/projeto/$projectId/cronograma'
+  to:
+    | '/'
+    | '/auth'
+    | '/projetos'
+    | '/projeto/$projectId/cronograma'
+    | '/projeto/$projectId/diario'
+    | '/projeto/$projectId/modulos'
   id:
     | '__root__'
     | '/'
@@ -73,6 +105,8 @@ export interface FileRouteTypes {
     | '/auth'
     | '/_authenticated/projetos'
     | '/_authenticated/projeto/$projectId/cronograma'
+    | '/_authenticated/projeto/$projectId/diario'
+    | '/_authenticated/projeto/$projectId/modulos'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -118,18 +152,38 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProjetoProjectIdCronogramaRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/projeto/$projectId/diario': {
+      id: '/_authenticated/projeto/$projectId/diario'
+      path: '/projeto/$projectId/diario'
+      fullPath: '/projeto/$projectId/diario'
+      preLoaderRoute: typeof AuthenticatedProjetoProjectIdDiarioRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/projeto/$projectId/modulos': {
+      id: '/_authenticated/projeto/$projectId/modulos'
+      path: '/projeto/$projectId/modulos'
+      fullPath: '/projeto/$projectId/modulos'
+      preLoaderRoute: typeof AuthenticatedProjetoProjectIdModulosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedProjetosRoute: typeof AuthenticatedProjetosRoute
   AuthenticatedProjetoProjectIdCronogramaRoute: typeof AuthenticatedProjetoProjectIdCronogramaRoute
+  AuthenticatedProjetoProjectIdDiarioRoute: typeof AuthenticatedProjetoProjectIdDiarioRoute
+  AuthenticatedProjetoProjectIdModulosRoute: typeof AuthenticatedProjetoProjectIdModulosRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedProjetosRoute: AuthenticatedProjetosRoute,
   AuthenticatedProjetoProjectIdCronogramaRoute:
     AuthenticatedProjetoProjectIdCronogramaRoute,
+  AuthenticatedProjetoProjectIdDiarioRoute:
+    AuthenticatedProjetoProjectIdDiarioRoute,
+  AuthenticatedProjetoProjectIdModulosRoute:
+    AuthenticatedProjetoProjectIdModulosRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
