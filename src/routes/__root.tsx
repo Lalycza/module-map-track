@@ -36,12 +36,35 @@ function NotFoundComponent() {
   );
 }
 
+const RELOAD_FLAG = "lovable:chunk-reload";
+
+function isStaleChunkError(error: Error) {
+  const message = `${error?.name ?? ""} ${error?.message ?? ""}`.toLowerCase();
+  return (
+    message.includes("importing a module script failed") ||
+    message.includes("failed to fetch dynamically imported module") ||
+    message.includes("error loading dynamically imported module") ||
+    message.includes("chunkloaderror")
+  );
+}
+
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
+    // A stale/failed asset import means the page shipped against an older build.
+    // Reload once to pick up the current assets instead of showing a blank screen.
+    if (typeof window !== "undefined" && isStaleChunkError(error)) {
+      if (!window.sessionStorage.getItem(RELOAD_FLAG)) {
+        window.sessionStorage.setItem(RELOAD_FLAG, "1");
+        window.location.reload();
+      }
+    } else if (typeof window !== "undefined") {
+      window.sessionStorage.removeItem(RELOAD_FLAG);
+    }
   }, [error]);
+
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
