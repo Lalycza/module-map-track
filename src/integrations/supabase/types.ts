@@ -76,9 +76,12 @@ export type Database = {
           created_at: string
           created_by: string | null
           data_homologacao: string | null
+          data_treinamento: string | null
+          homologado_por: string | null
           id: string
           nome: string
           observacoes: string | null
+          parent_id: string | null
           project_id: string
           responsavel_cliente: string | null
           responsavel_hpro: string | null
@@ -90,9 +93,12 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           data_homologacao?: string | null
+          data_treinamento?: string | null
+          homologado_por?: string | null
           id?: string
           nome: string
           observacoes?: string | null
+          parent_id?: string | null
           project_id: string
           responsavel_cliente?: string | null
           responsavel_hpro?: string | null
@@ -104,9 +110,12 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           data_homologacao?: string | null
+          data_treinamento?: string | null
+          homologado_por?: string | null
           id?: string
           nome?: string
           observacoes?: string | null
+          parent_id?: string | null
           project_id?: string
           responsavel_cliente?: string | null
           responsavel_hpro?: string | null
@@ -114,6 +123,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "modules_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "modules"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "modules_project_id_fkey"
             columns: ["project_id"]
@@ -151,10 +167,13 @@ export type Database = {
           data_conclusao: string | null
           data_inicio: string | null
           data_prevista: string | null
+          data_prevista_original: string | null
           descricao: string | null
           id: string
+          modulo: string | null
           nome: string
           ordem: number
+          pauta_semana: boolean
           project_id: string
           responsavel: string | null
           status: string
@@ -166,10 +185,13 @@ export type Database = {
           data_conclusao?: string | null
           data_inicio?: string | null
           data_prevista?: string | null
+          data_prevista_original?: string | null
           descricao?: string | null
           id?: string
+          modulo?: string | null
           nome: string
           ordem?: number
+          pauta_semana?: boolean
           project_id: string
           responsavel?: string | null
           status?: string
@@ -181,10 +203,13 @@ export type Database = {
           data_conclusao?: string | null
           data_inicio?: string | null
           data_prevista?: string | null
+          data_prevista_original?: string | null
           descricao?: string | null
           id?: string
+          modulo?: string | null
           nome?: string
           ordem?: number
+          pauta_semana?: boolean
           project_id?: string
           responsavel?: string | null
           status?: string
