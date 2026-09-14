@@ -233,6 +233,7 @@ export type Database = {
           created_by: string | null
           data_inicio: string | null
           descricao: string | null
+          email_cliente: string | null
           id: string
           previsao_conclusao: string | null
           responsavel: string | null
@@ -245,6 +246,7 @@ export type Database = {
           created_by?: string | null
           data_inicio?: string | null
           descricao?: string | null
+          email_cliente?: string | null
           id?: string
           previsao_conclusao?: string | null
           responsavel?: string | null
@@ -257,6 +259,7 @@ export type Database = {
           created_by?: string | null
           data_inicio?: string | null
           descricao?: string | null
+          email_cliente?: string | null
           id?: string
           previsao_conclusao?: string | null
           responsavel?: string | null
