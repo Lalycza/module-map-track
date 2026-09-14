@@ -44,6 +44,7 @@ type ProjectForm = {
   cliente: string;
   descricao: string;
   responsavel: string;
+  email_cliente: string;
   data_inicio: string;
   previsao_conclusao: string;
 };
@@ -52,6 +53,7 @@ const emptyForm: ProjectForm = {
   cliente: "",
   descricao: "",
   responsavel: "",
+  email_cliente: "",
   data_inicio: "",
   previsao_conclusao: "",
 };
@@ -91,6 +93,7 @@ function ProjetosPage() {
         cliente: values.cliente,
         descricao: values.descricao || null,
         responsavel: values.responsavel || null,
+        email_cliente: values.email_cliente || null,
         data_inicio: values.data_inicio || null,
         previsao_conclusao: values.previsao_conclusao || null,
       };
@@ -187,6 +190,7 @@ function ProjetosPage() {
                           cliente: project.cliente,
                           descricao: project.descricao ?? "",
                           responsavel: project.responsavel ?? "",
+                          email_cliente: project.email_cliente ?? "",
                           data_inicio: project.data_inicio ?? "",
                           previsao_conclusao: project.previsao_conclusao ?? "",
                         })
@@ -279,6 +283,16 @@ function ProjetosPage() {
                   id="responsavel"
                   value={form.responsavel}
                   onChange={(e) => setForm({ ...form, responsavel: e.target.value })}
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="email_cliente">E-mail do responsável do cliente</Label>
+                <Input
+                  id="email_cliente"
+                  type="email"
+                  value={form.email_cliente}
+                  onChange={(e) => setForm({ ...form, email_cliente: e.target.value })}
+                  placeholder="contato@cliente.com.br"
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
