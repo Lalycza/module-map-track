@@ -240,6 +240,24 @@ function ProjetosPage() {
                   </div>
                   <Progress value={p.percent} />
                 </div>
+
+                <div className="mt-4 grid grid-cols-3 gap-2">
+                  <Button asChild variant="outline" size="sm">
+                    <Link to="/projeto/$projectId/cronograma" params={{ projectId: project.id }}>
+                      Cronograma
+                    </Link>
+                  </Button>
+                  <Button asChild variant="outline" size="sm">
+                    <Link to="/projeto/$projectId/modulos" params={{ projectId: project.id }}>
+                      Mapa
+                    </Link>
+                  </Button>
+                  <Button asChild variant="outline" size="sm">
+                    <Link to="/projeto/$projectId/diario" params={{ projectId: project.id }}>
+                      Diário
+                    </Link>
+                  </Button>
+                </div>
               </div>
             );
           })}
