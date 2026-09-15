@@ -669,6 +669,11 @@ export const TEMPLATE_FASES: TemplateFase[] = [
       }
     ],
     "responsavel": "HPRO/CLIENTE"
+  },
+  {
+    "fase": "GO LIVE",
+    "itens": [{ "grupo": null, "nome": "Go Live" }],
+    "responsavel": "HPRO/CLIENTE"
   }
 ];
 
