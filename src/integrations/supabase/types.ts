@@ -16,6 +16,7 @@ export type Database = {
     Tables: {
       log_entries: {
         Row: {
+          analista: string | null
           created_at: string
           created_by: string | null
           data_reuniao: string
@@ -24,6 +25,7 @@ export type Database = {
           observacoes: string | null
           participantes: string | null
           pauta: string | null
+          pauta_dia: string | null
           project_id: string
           proximo_treinamento: string | null
           tarefa_cliente: string | null
@@ -31,6 +33,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          analista?: string | null
           created_at?: string
           created_by?: string | null
           data_reuniao: string
@@ -39,6 +42,7 @@ export type Database = {
           observacoes?: string | null
           participantes?: string | null
           pauta?: string | null
+          pauta_dia?: string | null
           project_id: string
           proximo_treinamento?: string | null
           tarefa_cliente?: string | null
@@ -46,6 +50,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          analista?: string | null
           created_at?: string
           created_by?: string | null
           data_reuniao?: string
@@ -54,6 +59,7 @@ export type Database = {
           observacoes?: string | null
           participantes?: string | null
           pauta?: string | null
+          pauta_dia?: string | null
           project_id?: string
           proximo_treinamento?: string | null
           tarefa_cliente?: string | null
@@ -77,10 +83,12 @@ export type Database = {
           created_by: string | null
           data_homologacao: string | null
           data_treinamento: string | null
+          grupo: string | null
           homologado_por: string | null
           id: string
           nome: string
           observacoes: string | null
+          ordem: number
           parent_id: string | null
           project_id: string
           responsavel_cliente: string | null
@@ -94,10 +102,12 @@ export type Database = {
           created_by?: string | null
           data_homologacao?: string | null
           data_treinamento?: string | null
+          grupo?: string | null
           homologado_por?: string | null
           id?: string
           nome: string
           observacoes?: string | null
+          ordem?: number
           parent_id?: string | null
           project_id: string
           responsavel_cliente?: string | null
@@ -111,10 +121,12 @@ export type Database = {
           created_by?: string | null
           data_homologacao?: string | null
           data_treinamento?: string | null
+          grupo?: string | null
           homologado_por?: string | null
           id?: string
           nome?: string
           observacoes?: string | null
+          ordem?: number
           parent_id?: string | null
           project_id?: string
           responsavel_cliente?: string | null
@@ -176,6 +188,7 @@ export type Database = {
           pauta_semana: boolean
           project_id: string
           responsavel: string | null
+          responsavel_tipo: string | null
           status: string
           updated_at: string
         }
@@ -194,6 +207,7 @@ export type Database = {
           pauta_semana?: boolean
           project_id: string
           responsavel?: string | null
+          responsavel_tipo?: string | null
           status?: string
           updated_at?: string
         }
@@ -212,6 +226,7 @@ export type Database = {
           pauta_semana?: boolean
           project_id?: string
           responsavel?: string | null
+          responsavel_tipo?: string | null
           status?: string
           updated_at?: string
         }
@@ -227,10 +242,13 @@ export type Database = {
       }
       projects: {
         Row: {
+          analista: string | null
           arquivado: boolean
           cliente: string
+          coordenacao: string | null
           created_at: string
           created_by: string | null
+          data_entrega_original: string | null
           data_inicio: string | null
           descricao: string | null
           email_cliente: string | null
@@ -240,10 +258,13 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          analista?: string | null
           arquivado?: boolean
           cliente: string
+          coordenacao?: string | null
           created_at?: string
           created_by?: string | null
+          data_entrega_original?: string | null
           data_inicio?: string | null
           descricao?: string | null
           email_cliente?: string | null
@@ -253,10 +274,13 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          analista?: string | null
           arquivado?: boolean
           cliente?: string
+          coordenacao?: string | null
           created_at?: string
           created_by?: string | null
+          data_entrega_original?: string | null
           data_inicio?: string | null
           descricao?: string | null
           email_cliente?: string | null

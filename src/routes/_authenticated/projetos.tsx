@@ -6,8 +6,10 @@ import { toast } from "sonner";
 
 import { supabase } from "@/integrations/supabase/client";
 import { effectiveStageStatus, formatDate } from "@/lib/status";
+import { TEMPLATE_FASES } from "@/lib/template";
 import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -44,18 +46,26 @@ type ProjectForm = {
   cliente: string;
   descricao: string;
   responsavel: string;
+  analista: string;
+  coordenacao: string;
   email_cliente: string;
   data_inicio: string;
   previsao_conclusao: string;
+  data_entrega_original: string;
+  fases: string[];
 };
 
 const emptyForm: ProjectForm = {
   cliente: "",
   descricao: "",
   responsavel: "",
+  analista: "",
+  coordenacao: "",
   email_cliente: "",
   data_inicio: "",
   previsao_conclusao: "",
+  data_entrega_original: "",
+  fases: TEMPLATE_FASES.map((f) => f.fase),
 };
 
 function ProjetosPage() {
@@ -87,28 +97,81 @@ function ProjetosPage() {
     },
   });
 
+  const modulesQuery = useQuery({
+    queryKey: ["all-modules"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("modules")
+        .select("project_id, parent_id, status");
+      if (error) throw error;
+      return data;
+    },
+  });
+
   const saveProject = useMutation({
     mutationFn: async (values: ProjectForm) => {
       const payload = {
         cliente: values.cliente,
         descricao: values.descricao || null,
         responsavel: values.responsavel || null,
+        analista: values.analista || null,
+        coordenacao: values.coordenacao || null,
         email_cliente: values.email_cliente || null,
         data_inicio: values.data_inicio || null,
         previsao_conclusao: values.previsao_conclusao || null,
+        data_entrega_original: values.data_entrega_original || null,
       };
       if (values.id) {
         const { error } = await supabase.from("projects").update(payload).eq("id", values.id);
         if (error) throw error;
-      } else {
-        const { error } = await supabase
-          .from("projects")
-          .insert({ ...payload, created_by: user.id });
-        if (error) throw error;
+        return;
+      }
+
+      const { data: created, error } = await supabase
+        .from("projects")
+        .insert({ ...payload, created_by: user.id })
+        .select("id")
+        .single();
+      if (error) throw error;
+
+      const fases = TEMPLATE_FASES.filter((f) => values.fases.includes(f.fase));
+      if (fases.length === 0 || !created) return;
+
+      let ordem = 0;
+      for (const fase of fases) {
+        const { data: pai, error: paiError } = await supabase
+          .from("modules")
+          .insert({
+            project_id: created.id,
+            nome: fase.fase,
+            area: fase.responsavel,
+            status: "pendente",
+            ordem: ordem++,
+            created_by: user.id,
+          })
+          .select("id")
+          .single();
+        if (paiError) throw paiError;
+
+        const filhos = fase.itens.map((item) => ({
+          project_id: created.id,
+          parent_id: pai.id,
+          nome: item.nome,
+          grupo: item.grupo,
+          area: fase.responsavel,
+          status: "pendente",
+          ordem: ordem++,
+          created_by: user.id,
+        }));
+        if (filhos.length > 0) {
+          const { error: filhosError } = await supabase.from("modules").insert(filhos);
+          if (filhosError) throw filhosError;
+        }
       }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["projects"] });
+      queryClient.invalidateQueries({ queryKey: ["all-modules"] });
       setForm(null);
       toast.success("Projeto salvo.");
     },
@@ -126,12 +189,23 @@ function ProjetosPage() {
   const projects = (projectsQuery.data ?? []).filter((p) => p.arquivado === showArchived);
 
   function progressFor(projectId: string) {
+    const itens = (modulesQuery.data ?? []).filter(
+      (m) => m.project_id === projectId && m.parent_id,
+    );
     const stages = (stagesQuery.data ?? []).filter((s) => s.project_id === projectId);
-    if (stages.length === 0) return { percent: 0, total: 0, done: 0, late: 0 };
-    const done = stages.filter((s) => effectiveStageStatus(s) === "concluida").length;
     const late = stages.filter((s) => effectiveStageStatus(s) === "atrasada").length;
-    return { percent: Math.round((done / stages.length) * 100), total: stages.length, done, late };
+    const done = itens.filter((m) => m.status === "homologado").length;
+    const percent = itens.length === 0 ? 0 : Math.round((done / itens.length) * 100);
+    return { percent, total: itens.length, done, late };
   }
+
+  const toggleFase = (fase: string) => {
+    if (!form) return;
+    const fases = form.fases.includes(fase)
+      ? form.fases.filter((f) => f !== fase)
+      : [...form.fases, fase];
+    setForm({ ...form, fases });
+  };
 
   return (
     <AppShell userLabel={user.email}>
@@ -190,9 +264,13 @@ function ProjetosPage() {
                           cliente: project.cliente,
                           descricao: project.descricao ?? "",
                           responsavel: project.responsavel ?? "",
+                          analista: project.analista ?? "",
+                          coordenacao: project.coordenacao ?? "",
                           email_cliente: project.email_cliente ?? "",
                           data_inicio: project.data_inicio ?? "",
                           previsao_conclusao: project.previsao_conclusao ?? "",
+                          data_entrega_original: project.data_entrega_original ?? "",
+                          fases: [],
                         })
                       }
                     >
@@ -215,17 +293,21 @@ function ProjetosPage() {
                   </div>
                 </div>
 
-                <dl className="mt-4 grid grid-cols-3 gap-3 text-xs">
+                <dl className="mt-4 grid grid-cols-4 gap-3 text-xs">
                   <div>
-                    <dt className="text-muted-foreground">Responsável</dt>
-                    <dd className="font-medium">{project.responsavel ?? "—"}</dd>
+                    <dt className="text-muted-foreground">Analista</dt>
+                    <dd className="font-medium">{project.analista ?? project.responsavel ?? "—"}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-muted-foreground">Coordenação</dt>
+                    <dd className="font-medium">{project.coordenacao ?? "—"}</dd>
                   </div>
                   <div>
                     <dt className="text-muted-foreground">Início</dt>
                     <dd className="font-medium">{formatDate(project.data_inicio)}</dd>
                   </div>
                   <div>
-                    <dt className="text-muted-foreground">Previsão</dt>
+                    <dt className="text-muted-foreground">Entrega</dt>
                     <dd className="font-medium">{formatDate(project.previsao_conclusao)}</dd>
                   </div>
                 </dl>
@@ -233,8 +315,8 @@ function ProjetosPage() {
                 <div className="mt-4">
                   <div className="mb-1 flex items-center justify-between text-xs">
                     <span className="text-muted-foreground">
-                      {p.done} de {p.total} etapas concluídas
-                      {p.late > 0 ? ` · ${p.late} atrasada(s)` : ""}
+                      {p.done} de {p.total} itens homologados
+                      {p.late > 0 ? ` · ${p.late} etapa(s) atrasada(s)` : ""}
                     </span>
                     <span className="font-medium">{p.percent}%</span>
                   </div>
@@ -265,7 +347,7 @@ function ProjetosPage() {
       )}
 
       <Dialog open={form !== null} onOpenChange={(open) => !open && setForm(null)}>
-        <DialogContent>
+        <DialogContent className="max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>{form?.id ? "Editar projeto" : "Novo projeto"}</DialogTitle>
             <DialogDescription>Dados gerais da implantação do cliente.</DialogDescription>
@@ -288,15 +370,33 @@ function ProjetosPage() {
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="descricao">Descrição</Label>
+                <Label htmlFor="descricao">Projeto / descrição</Label>
                 <Textarea
                   id="descricao"
                   value={form.descricao}
                   onChange={(e) => setForm({ ...form, descricao: e.target.value })}
                 />
               </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <Label htmlFor="analista">Analista de implantação</Label>
+                  <Input
+                    id="analista"
+                    value={form.analista}
+                    onChange={(e) => setForm({ ...form, analista: e.target.value })}
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="coordenacao">Coordenação</Label>
+                  <Input
+                    id="coordenacao"
+                    value={form.coordenacao}
+                    onChange={(e) => setForm({ ...form, coordenacao: e.target.value })}
+                  />
+                </div>
+              </div>
               <div className="space-y-1.5">
-                <Label htmlFor="responsavel">Responsável</Label>
+                <Label htmlFor="responsavel">Responsável do cliente</Label>
                 <Input
                   id="responsavel"
                   value={form.responsavel}
@@ -313,7 +413,7 @@ function ProjetosPage() {
                   placeholder="contato@cliente.com.br"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-3 gap-3">
                 <div className="space-y-1.5">
                   <Label htmlFor="inicio">Início</Label>
                   <Input
@@ -324,7 +424,7 @@ function ProjetosPage() {
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="previsao">Previsão de conclusão</Label>
+                  <Label htmlFor="previsao">Data de entrega</Label>
                   <Input
                     id="previsao"
                     type="date"
@@ -332,7 +432,62 @@ function ProjetosPage() {
                     onChange={(e) => setForm({ ...form, previsao_conclusao: e.target.value })}
                   />
                 </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="original">Entrega original</Label>
+                  <Input
+                    id="original"
+                    type="date"
+                    value={form.data_entrega_original}
+                    onChange={(e) => setForm({ ...form, data_entrega_original: e.target.value })}
+                  />
+                </div>
               </div>
+
+              {form.id ? null : (
+                <div className="space-y-2 rounded-lg border bg-muted/30 p-3">
+                  <div className="flex items-center justify-between">
+                    <Label>Fases do modelo</Label>
+                    <button
+                      type="button"
+                      className="text-xs text-primary hover:underline"
+                      onClick={() =>
+                        setForm({
+                          ...form,
+                          fases:
+                            form.fases.length === TEMPLATE_FASES.length
+                              ? []
+                              : TEMPLATE_FASES.map((f) => f.fase),
+                        })
+                      }
+                    >
+                      {form.fases.length === TEMPLATE_FASES.length
+                        ? "Desmarcar todas"
+                        : "Marcar todas"}
+                    </button>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    As fases marcadas já entram no mapa com todos os submódulos do modelo.
+                  </p>
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    {TEMPLATE_FASES.map((fase) => (
+                      <label
+                        key={fase.fase}
+                        className="flex items-start gap-2 text-xs leading-tight"
+                      >
+                        <Checkbox
+                          checked={form.fases.includes(fase.fase)}
+                          onCheckedChange={() => toggleFase(fase.fase)}
+                        />
+                        <span>
+                          {fase.fase}
+                          <span className="ml-1 text-muted-foreground">({fase.itens.length})</span>
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <DialogFooter>
                 <Button type="button" variant="outline" onClick={() => setForm(null)}>
                   Cancelar

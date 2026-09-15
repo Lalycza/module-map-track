@@ -44,6 +44,7 @@ type LogForm = {
   id?: string;
   data_reuniao: string;
   hora_reuniao: string;
+  analista: string;
   participantes: string;
   pauta: string;
   tarefa_cliente: string;
@@ -55,6 +56,7 @@ type LogForm = {
 const emptyLog: LogForm = {
   data_reuniao: new Date().toISOString().slice(0, 10),
   hora_reuniao: "",
+  analista: "",
   participantes: "",
   pauta: "",
   tarefa_cliente: "",
@@ -93,6 +95,7 @@ function DiarioPage() {
       const payload = {
         data_reuniao: values.data_reuniao,
         hora_reuniao: values.hora_reuniao || null,
+        analista: values.analista || null,
         participantes: values.participantes || null,
         pauta: values.pauta || null,
         tarefa_cliente: values.tarefa_cliente || null,
@@ -210,6 +213,7 @@ function DiarioPage() {
                         id: log.id,
                         data_reuniao: log.data_reuniao,
                         hora_reuniao: formatTime(log.hora_reuniao),
+                        analista: log.analista ?? "",
                         participantes: log.participantes ?? "",
                         pauta: log.pauta ?? "",
                         tarefa_cliente: log.tarefa_cliente ?? "",

@@ -53,6 +53,7 @@ type ModuleForm = {
   id?: string;
   nome: string;
   parent_id: string;
+  grupo: string;
   area: string;
   responsavel_cliente: string;
   responsavel_hpro: string;
@@ -68,6 +69,7 @@ const SEM_PAI = "nenhum";
 const emptyModule: ModuleForm = {
   nome: "",
   parent_id: SEM_PAI,
+  grupo: "",
   area: "",
   responsavel_cliente: "",
   responsavel_hpro: "",
@@ -95,6 +97,7 @@ function ModulosPage() {
         .from("modules")
         .select("*")
         .eq("project_id", projectId)
+        .order("ordem")
         .order("nome");
       if (error) throw error;
       return data;
@@ -108,6 +111,7 @@ function ModulosPage() {
       const payload = {
         nome: values.nome,
         parent_id: values.parent_id === SEM_PAI ? null : values.parent_id,
+        grupo: values.grupo || null,
         area: values.area || null,
         responsavel_cliente: values.responsavel_cliente || null,
         responsavel_hpro: values.responsavel_hpro || null,
@@ -398,7 +402,16 @@ function ModulosPage() {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1.5">
-                  <Label htmlFor="area">Área</Label>
+                  <Label htmlFor="grupo">Grupo (utilitário)</Label>
+                  <Input
+                    id="grupo"
+                    value={form.grupo}
+                    onChange={(e) => setForm({ ...form, grupo: e.target.value })}
+                    placeholder="Ex.: CADASTROS, ORÇAMENTO"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="area">Área / responsável</Label>
                   <Input
                     id="area"
                     value={form.area}
@@ -499,6 +512,7 @@ type ModuleRowData = {
   nome: string;
   status: string;
   area: string | null;
+  grupo?: string | null;
   parent_id: string | null;
   responsavel_cliente: string | null;
   responsavel_hpro: string | null;
@@ -513,6 +527,7 @@ function toForm(m: ModuleRowData): ModuleForm {
     id: m.id,
     nome: m.nome,
     parent_id: m.parent_id ?? SEM_PAI,
+    grupo: m.grupo ?? "",
     area: m.area ?? "",
     responsavel_cliente: m.responsavel_cliente ?? "",
     responsavel_hpro: m.responsavel_hpro ?? "",
@@ -539,6 +554,7 @@ function ModuleRow({
       <td className="px-4 py-3">
         <p className="flex items-center gap-2 font-medium">
           <CornerDownRight className="size-3.5 text-muted-foreground" />
+          {m.grupo ? <span className="text-xs text-muted-foreground">{m.grupo} ·</span> : null}
           {m.nome}
         </p>
         {m.observacoes ? (
