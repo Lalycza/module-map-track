@@ -97,6 +97,7 @@ function ModulosPage() {
         .from("modules")
         .select("*")
         .eq("project_id", projectId)
+        .order("ordem")
         .order("nome");
       if (error) throw error;
       return data;
@@ -110,6 +111,7 @@ function ModulosPage() {
       const payload = {
         nome: values.nome,
         parent_id: values.parent_id === SEM_PAI ? null : values.parent_id,
+        grupo: values.grupo || null,
         area: values.area || null,
         responsavel_cliente: values.responsavel_cliente || null,
         responsavel_hpro: values.responsavel_hpro || null,
