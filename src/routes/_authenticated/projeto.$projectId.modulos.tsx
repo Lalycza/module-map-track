@@ -53,6 +53,7 @@ type ModuleForm = {
   id?: string;
   nome: string;
   parent_id: string;
+  grupo: string;
   area: string;
   responsavel_cliente: string;
   responsavel_hpro: string;
@@ -68,6 +69,7 @@ const SEM_PAI = "nenhum";
 const emptyModule: ModuleForm = {
   nome: "",
   parent_id: SEM_PAI,
+  grupo: "",
   area: "",
   responsavel_cliente: "",
   responsavel_hpro: "",
@@ -499,6 +501,7 @@ type ModuleRowData = {
   nome: string;
   status: string;
   area: string | null;
+  grupo?: string | null;
   parent_id: string | null;
   responsavel_cliente: string | null;
   responsavel_hpro: string | null;
@@ -513,6 +516,7 @@ function toForm(m: ModuleRowData): ModuleForm {
     id: m.id,
     nome: m.nome,
     parent_id: m.parent_id ?? SEM_PAI,
+    grupo: m.grupo ?? "",
     area: m.area ?? "",
     responsavel_cliente: m.responsavel_cliente ?? "",
     responsavel_hpro: m.responsavel_hpro ?? "",
@@ -539,6 +543,7 @@ function ModuleRow({
       <td className="px-4 py-3">
         <p className="flex items-center gap-2 font-medium">
           <CornerDownRight className="size-3.5 text-muted-foreground" />
+          {m.grupo ? <span className="text-xs text-muted-foreground">{m.grupo} ·</span> : null}
           {m.nome}
         </p>
         {m.observacoes ? (
