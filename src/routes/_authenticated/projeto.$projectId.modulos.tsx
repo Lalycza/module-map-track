@@ -402,7 +402,16 @@ function ModulosPage() {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1.5">
-                  <Label htmlFor="area">Área</Label>
+                  <Label htmlFor="grupo">Grupo (utilitário)</Label>
+                  <Input
+                    id="grupo"
+                    value={form.grupo}
+                    onChange={(e) => setForm({ ...form, grupo: e.target.value })}
+                    placeholder="Ex.: CADASTROS, ORÇAMENTO"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="area">Área / responsável</Label>
                   <Input
                     id="area"
                     value={form.area}
