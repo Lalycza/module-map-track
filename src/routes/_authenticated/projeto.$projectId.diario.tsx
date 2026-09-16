@@ -194,7 +194,12 @@ function DiarioPage() {
           <Input id="ate" type="date" value={ate} onChange={(e) => setAte(e.target.value)} />
         </div>
         <div className="ml-auto">
-          <Button size="sm" onClick={() => setForm({ ...emptyLog })}>
+          <Button
+            size="sm"
+            onClick={() =>
+              setForm({ ...emptyLog, analista: project.data?.analista ?? "" })
+            }
+          >
             <Plus className="size-4" /> Novo registro
           </Button>
         </div>

@@ -65,7 +65,10 @@ export function GradeSemanas({ stages }: { stages: GradeStage[] }) {
       }
       for (const d of [s.data_inicio, s.data_prevista, s.data_conclusao]) {
         if (!d) continue;
-        const [y, m, dia] = d.split("-").map(Number);
+        const partes = d.split("-").map(Number);
+        const y = partes[0] ?? 0;
+        const m = partes[1] ?? 1;
+        const dia = partes[2] ?? 1;
         if (y !== ano) continue;
         linha.marcas.add(`${m - 1}-${semanaDoMes(dia)}`);
       }
