@@ -333,7 +333,7 @@ function CronogramaPage() {
                               className={hoje ? "border-t bg-info/5" : "border-t"}
                             >
                               <td className="px-4 py-3">
-                                <p className="flex items-center gap-2 font-medium">
+                                <div className="flex items-center gap-2 font-medium">
                                   {stage.nome}
                                   {stage.pauta_semana ? (
                                     <Star className="size-3.5 text-warning-foreground" />
@@ -343,7 +343,7 @@ function CronogramaPage() {
                                       Hoje
                                     </Badge>
                                   ) : null}
-                                </p>
+                                </div>
                                 {stage.descricao ? (
                                   <p className="text-xs text-muted-foreground">{stage.descricao}</p>
                                 ) : null}
