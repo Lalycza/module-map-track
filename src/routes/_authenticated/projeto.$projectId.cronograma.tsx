@@ -17,6 +17,7 @@ import {
 } from "@/lib/status";
 import { AppShell } from "@/components/AppShell";
 import { ProjectHeader } from "@/components/ProjectTabs";
+import { GradeSemanas } from "@/components/GradeSemanas";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -220,6 +221,8 @@ function CronogramaPage() {
         </div>
       </div>
 
+      <GradeSemanas stages={stages} />
+
       <div className="mb-6 rounded-lg border bg-card p-4">
         <div className="flex flex-wrap items-center gap-2">
           <Star className="size-4 text-warning-foreground" />
@@ -330,7 +333,7 @@ function CronogramaPage() {
                               className={hoje ? "border-t bg-info/5" : "border-t"}
                             >
                               <td className="px-4 py-3">
-                                <p className="flex items-center gap-2 font-medium">
+                                <div className="flex items-center gap-2 font-medium">
                                   {stage.nome}
                                   {stage.pauta_semana ? (
                                     <Star className="size-3.5 text-warning-foreground" />
@@ -340,7 +343,7 @@ function CronogramaPage() {
                                       Hoje
                                     </Badge>
                                   ) : null}
-                                </p>
+                                </div>
                                 {stage.descricao ? (
                                   <p className="text-xs text-muted-foreground">{stage.descricao}</p>
                                 ) : null}

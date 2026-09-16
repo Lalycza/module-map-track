@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 import { supabase } from "@/integrations/supabase/client";
 import { formatDate, formatTime } from "@/lib/status";
+import { PONDERACOES } from "@/lib/template";
 import { AppShell } from "@/components/AppShell";
 import { ProjectHeader } from "@/components/ProjectTabs";
 import { Button } from "@/components/ui/button";
@@ -155,6 +156,24 @@ function DiarioPage() {
         subtitle={project.data?.descricao}
       />
 
+      <section className="mb-4 rounded-lg border bg-muted/30 p-4">
+        <h2 className="text-sm font-semibold">Ponderações / orientações</h2>
+        <ul className="mt-2 space-y-1 text-xs text-muted-foreground">
+          {PONDERACOES.map((item) => (
+            <li key={item} className="flex gap-2">
+              <span aria-hidden>•</span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+        {project.data?.analista ? (
+          <p className="mt-3 text-xs">
+            <span className="text-muted-foreground">Analista implantador:</span>{" "}
+            <span className="font-medium">{project.data.analista}</span>
+          </p>
+        ) : null}
+      </section>
+
       <div className="mb-4 flex flex-wrap items-end gap-2">
         <Input
           placeholder="Buscar no conteúdo…"
@@ -175,7 +194,12 @@ function DiarioPage() {
           <Input id="ate" type="date" value={ate} onChange={(e) => setAte(e.target.value)} />
         </div>
         <div className="ml-auto">
-          <Button size="sm" onClick={() => setForm({ ...emptyLog })}>
+          <Button
+            size="sm"
+            onClick={() =>
+              setForm({ ...emptyLog, analista: project.data?.analista ?? "" })
+            }
+          >
             <Plus className="size-4" /> Novo registro
           </Button>
         </div>
@@ -200,6 +224,11 @@ function DiarioPage() {
                     <p className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
                       <Users className="size-3.5" />
                       {log.participantes}
+                    </p>
+                  ) : null}
+                  {log.analista ? (
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      Analista implantador: {log.analista}
                     </p>
                   ) : null}
                 </div>
@@ -284,6 +313,14 @@ function DiarioPage() {
                     onChange={(e) => setForm({ ...form, hora_reuniao: e.target.value })}
                   />
                 </div>
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="analista">Analista implantador</Label>
+                <Input
+                  id="analista"
+                  value={form.analista}
+                  onChange={(e) => setForm({ ...form, analista: e.target.value })}
+                />
               </div>
               <div className="space-y-1.5">
                 <Label htmlFor="participantes">Participantes</Label>
