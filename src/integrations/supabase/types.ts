@@ -14,6 +14,72 @@ export type Database = {
   }
   public: {
     Tables: {
+      clients: {
+        Row: {
+          atividade_principal: string | null
+          bairro: string | null
+          cep: string | null
+          cnpj: string | null
+          complemento: string | null
+          created_at: string
+          created_by: string | null
+          email: string | null
+          id: string
+          logradouro: string | null
+          municipio: string | null
+          nome_fantasia: string | null
+          numero: string | null
+          observacoes: string | null
+          razao_social: string
+          situacao_cadastral: string | null
+          telefone: string | null
+          uf: string | null
+          updated_at: string
+        }
+        Insert: {
+          atividade_principal?: string | null
+          bairro?: string | null
+          cep?: string | null
+          cnpj?: string | null
+          complemento?: string | null
+          created_at?: string
+          created_by?: string | null
+          email?: string | null
+          id?: string
+          logradouro?: string | null
+          municipio?: string | null
+          nome_fantasia?: string | null
+          numero?: string | null
+          observacoes?: string | null
+          razao_social: string
+          situacao_cadastral?: string | null
+          telefone?: string | null
+          uf?: string | null
+          updated_at?: string
+        }
+        Update: {
+          atividade_principal?: string | null
+          bairro?: string | null
+          cep?: string | null
+          cnpj?: string | null
+          complemento?: string | null
+          created_at?: string
+          created_by?: string | null
+          email?: string | null
+          id?: string
+          logradouro?: string | null
+          municipio?: string | null
+          nome_fantasia?: string | null
+          numero?: string | null
+          observacoes?: string | null
+          razao_social?: string
+          situacao_cadastral?: string | null
+          telefone?: string | null
+          uf?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       log_entries: {
         Row: {
           analista: string | null
@@ -151,6 +217,90 @@ export type Database = {
           },
         ]
       }
+      product_modules: {
+        Row: {
+          area: string | null
+          created_at: string
+          grupo: string | null
+          id: string
+          nome: string
+          ordem: number
+          parent_id: string | null
+          product_id: string
+          responsavel: string | null
+          updated_at: string
+        }
+        Insert: {
+          area?: string | null
+          created_at?: string
+          grupo?: string | null
+          id?: string
+          nome: string
+          ordem?: number
+          parent_id?: string | null
+          product_id: string
+          responsavel?: string | null
+          updated_at?: string
+        }
+        Update: {
+          area?: string | null
+          created_at?: string
+          grupo?: string | null
+          id?: string
+          nome?: string
+          ordem?: number
+          parent_id?: string | null
+          product_id?: string
+          responsavel?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_modules_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "product_modules"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "product_modules_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      products: {
+        Row: {
+          ativo: boolean
+          created_at: string
+          created_by: string | null
+          descricao: string | null
+          id: string
+          nome: string
+          updated_at: string
+        }
+        Insert: {
+          ativo?: boolean
+          created_at?: string
+          created_by?: string | null
+          descricao?: string | null
+          id?: string
+          nome: string
+          updated_at?: string
+        }
+        Update: {
+          ativo?: boolean
+          created_at?: string
+          created_by?: string | null
+          descricao?: string | null
+          id?: string
+          nome?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -171,6 +321,133 @@ export type Database = {
           nome?: string
         }
         Relationships: []
+      }
+      project_analysts: {
+        Row: {
+          created_at: string
+          id: string
+          project_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          project_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          project_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_analysts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      project_documents: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          descricao: string | null
+          id: string
+          mime_type: string | null
+          nome: string
+          project_id: string
+          storage_path: string
+          tamanho: number | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          descricao?: string | null
+          id?: string
+          mime_type?: string | null
+          nome: string
+          project_id: string
+          storage_path: string
+          tamanho?: number | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          descricao?: string | null
+          id?: string
+          mime_type?: string | null
+          nome?: string
+          project_id?: string
+          storage_path?: string
+          tamanho?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_documents_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      project_emails: {
+        Row: {
+          assunto: string | null
+          client_id: string | null
+          conteudo: string | null
+          created_at: string
+          created_by: string | null
+          destinatario: string
+          id: string
+          project_id: string
+          status: string
+          tipo: string | null
+        }
+        Insert: {
+          assunto?: string | null
+          client_id?: string | null
+          conteudo?: string | null
+          created_at?: string
+          created_by?: string | null
+          destinatario: string
+          id?: string
+          project_id: string
+          status?: string
+          tipo?: string | null
+        }
+        Update: {
+          assunto?: string | null
+          client_id?: string | null
+          conteudo?: string | null
+          created_at?: string
+          created_by?: string | null
+          destinatario?: string
+          id?: string
+          project_id?: string
+          status?: string
+          tipo?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_emails_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_emails_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       project_stages: {
         Row: {
@@ -244,6 +521,7 @@ export type Database = {
         Row: {
           analista: string | null
           arquivado: boolean
+          client_id: string | null
           cliente: string
           coordenacao: string | null
           created_at: string
@@ -254,12 +532,14 @@ export type Database = {
           email_cliente: string | null
           id: string
           previsao_conclusao: string | null
+          product_id: string | null
           responsavel: string | null
           updated_at: string
         }
         Insert: {
           analista?: string | null
           arquivado?: boolean
+          client_id?: string | null
           cliente: string
           coordenacao?: string | null
           created_at?: string
@@ -270,12 +550,14 @@ export type Database = {
           email_cliente?: string | null
           id?: string
           previsao_conclusao?: string | null
+          product_id?: string | null
           responsavel?: string | null
           updated_at?: string
         }
         Update: {
           analista?: string | null
           arquivado?: boolean
+          client_id?: string | null
           cliente?: string
           coordenacao?: string | null
           created_at?: string
@@ -286,8 +568,45 @@ export type Database = {
           email_cliente?: string | null
           id?: string
           previsao_conclusao?: string | null
+          product_id?: string | null
           responsavel?: string | null
           updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "projects_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "projects_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
         }
         Relationships: []
       }
@@ -296,10 +615,18 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      can_access_project: { Args: { _project_id: string }; Returns: boolean }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_admin: { Args: never; Returns: boolean }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "operador"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -426,6 +753,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "operador"],
+    },
   },
 } as const
