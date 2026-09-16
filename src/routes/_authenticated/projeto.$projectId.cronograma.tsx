@@ -17,6 +17,7 @@ import {
 } from "@/lib/status";
 import { AppShell } from "@/components/AppShell";
 import { ProjectHeader } from "@/components/ProjectTabs";
+import { GradeSemanas } from "@/components/GradeSemanas";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -219,6 +220,8 @@ function CronogramaPage() {
           <Progress value={percent} className="mt-2" />
         </div>
       </div>
+
+      <GradeSemanas stages={stages} />
 
       <div className="mb-6 rounded-lg border bg-card p-4">
         <div className="flex flex-wrap items-center gap-2">
