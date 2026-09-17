@@ -13,8 +13,12 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedProjetosRouteImport } from './routes/_authenticated/projetos'
+import { Route as AuthenticatedCadastrosClientesRouteImport } from './routes/_authenticated/cadastros.clientes'
+import { Route as AuthenticatedCadastrosProdutosRouteImport } from './routes/_authenticated/cadastros.produtos'
+import { Route as AuthenticatedCadastrosUsuariosRouteImport } from './routes/_authenticated/cadastros.usuarios'
 import { Route as AuthenticatedProjetoProjectIdCronogramaRouteImport } from './routes/_authenticated/projeto.$projectId.cronograma'
 import { Route as AuthenticatedProjetoProjectIdDiarioRouteImport } from './routes/_authenticated/projeto.$projectId.diario'
+import { Route as AuthenticatedProjetoProjectIdDocumentosRouteImport } from './routes/_authenticated/projeto.$projectId.documentos'
 import { Route as AuthenticatedProjetoProjectIdModulosRouteImport } from './routes/_authenticated/projeto.$projectId.modulos'
 
 const IndexRoute = IndexRouteImport.update({
@@ -36,6 +40,24 @@ const AuthenticatedProjetosRoute = AuthenticatedProjetosRouteImport.update({
   path: '/projetos',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedCadastrosClientesRoute =
+  AuthenticatedCadastrosClientesRouteImport.update({
+    id: '/cadastros/clientes',
+    path: '/cadastros/clientes',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedCadastrosProdutosRoute =
+  AuthenticatedCadastrosProdutosRouteImport.update({
+    id: '/cadastros/produtos',
+    path: '/cadastros/produtos',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedCadastrosUsuariosRoute =
+  AuthenticatedCadastrosUsuariosRouteImport.update({
+    id: '/cadastros/usuarios',
+    path: '/cadastros/usuarios',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedProjetoProjectIdCronogramaRoute =
   AuthenticatedProjetoProjectIdCronogramaRouteImport.update({
     id: '/projeto/$projectId/cronograma',
@@ -46,6 +68,12 @@ const AuthenticatedProjetoProjectIdDiarioRoute =
   AuthenticatedProjetoProjectIdDiarioRouteImport.update({
     id: '/projeto/$projectId/diario',
     path: '/projeto/$projectId/diario',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedProjetoProjectIdDocumentosRoute =
+  AuthenticatedProjetoProjectIdDocumentosRouteImport.update({
+    id: '/projeto/$projectId/documentos',
+    path: '/projeto/$projectId/documentos',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedProjetoProjectIdModulosRoute =
@@ -59,16 +87,24 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/projetos': typeof AuthenticatedProjetosRoute
+  '/cadastros/clientes': typeof AuthenticatedCadastrosClientesRoute
+  '/cadastros/produtos': typeof AuthenticatedCadastrosProdutosRoute
+  '/cadastros/usuarios': typeof AuthenticatedCadastrosUsuariosRoute
   '/projeto/$projectId/cronograma': typeof AuthenticatedProjetoProjectIdCronogramaRoute
   '/projeto/$projectId/diario': typeof AuthenticatedProjetoProjectIdDiarioRoute
+  '/projeto/$projectId/documentos': typeof AuthenticatedProjetoProjectIdDocumentosRoute
   '/projeto/$projectId/modulos': typeof AuthenticatedProjetoProjectIdModulosRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/projetos': typeof AuthenticatedProjetosRoute
+  '/cadastros/clientes': typeof AuthenticatedCadastrosClientesRoute
+  '/cadastros/produtos': typeof AuthenticatedCadastrosProdutosRoute
+  '/cadastros/usuarios': typeof AuthenticatedCadastrosUsuariosRoute
   '/projeto/$projectId/cronograma': typeof AuthenticatedProjetoProjectIdCronogramaRoute
   '/projeto/$projectId/diario': typeof AuthenticatedProjetoProjectIdDiarioRoute
+  '/projeto/$projectId/documentos': typeof AuthenticatedProjetoProjectIdDocumentosRoute
   '/projeto/$projectId/modulos': typeof AuthenticatedProjetoProjectIdModulosRoute
 }
 export interface FileRoutesById {
@@ -77,8 +113,12 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/projetos': typeof AuthenticatedProjetosRoute
+  '/_authenticated/cadastros/clientes': typeof AuthenticatedCadastrosClientesRoute
+  '/_authenticated/cadastros/produtos': typeof AuthenticatedCadastrosProdutosRoute
+  '/_authenticated/cadastros/usuarios': typeof AuthenticatedCadastrosUsuariosRoute
   '/_authenticated/projeto/$projectId/cronograma': typeof AuthenticatedProjetoProjectIdCronogramaRoute
   '/_authenticated/projeto/$projectId/diario': typeof AuthenticatedProjetoProjectIdDiarioRoute
+  '/_authenticated/projeto/$projectId/documentos': typeof AuthenticatedProjetoProjectIdDocumentosRoute
   '/_authenticated/projeto/$projectId/modulos': typeof AuthenticatedProjetoProjectIdModulosRoute
 }
 export interface FileRouteTypes {
@@ -87,16 +127,24 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/projetos'
+    | '/cadastros/clientes'
+    | '/cadastros/produtos'
+    | '/cadastros/usuarios'
     | '/projeto/$projectId/cronograma'
     | '/projeto/$projectId/diario'
+    | '/projeto/$projectId/documentos'
     | '/projeto/$projectId/modulos'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
     | '/projetos'
+    | '/cadastros/clientes'
+    | '/cadastros/produtos'
+    | '/cadastros/usuarios'
     | '/projeto/$projectId/cronograma'
     | '/projeto/$projectId/diario'
+    | '/projeto/$projectId/documentos'
     | '/projeto/$projectId/modulos'
   id:
     | '__root__'
@@ -104,8 +152,12 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/projetos'
+    | '/_authenticated/cadastros/clientes'
+    | '/_authenticated/cadastros/produtos'
+    | '/_authenticated/cadastros/usuarios'
     | '/_authenticated/projeto/$projectId/cronograma'
     | '/_authenticated/projeto/$projectId/diario'
+    | '/_authenticated/projeto/$projectId/documentos'
     | '/_authenticated/projeto/$projectId/modulos'
   fileRoutesById: FileRoutesById
 }
@@ -145,6 +197,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProjetosRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/cadastros/clientes': {
+      id: '/_authenticated/cadastros/clientes'
+      path: '/cadastros/clientes'
+      fullPath: '/cadastros/clientes'
+      preLoaderRoute: typeof AuthenticatedCadastrosClientesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/cadastros/produtos': {
+      id: '/_authenticated/cadastros/produtos'
+      path: '/cadastros/produtos'
+      fullPath: '/cadastros/produtos'
+      preLoaderRoute: typeof AuthenticatedCadastrosProdutosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/cadastros/usuarios': {
+      id: '/_authenticated/cadastros/usuarios'
+      path: '/cadastros/usuarios'
+      fullPath: '/cadastros/usuarios'
+      preLoaderRoute: typeof AuthenticatedCadastrosUsuariosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/projeto/$projectId/cronograma': {
       id: '/_authenticated/projeto/$projectId/cronograma'
       path: '/projeto/$projectId/cronograma'
@@ -159,6 +232,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProjetoProjectIdDiarioRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/projeto/$projectId/documentos': {
+      id: '/_authenticated/projeto/$projectId/documentos'
+      path: '/projeto/$projectId/documentos'
+      fullPath: '/projeto/$projectId/documentos'
+      preLoaderRoute: typeof AuthenticatedProjetoProjectIdDocumentosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/projeto/$projectId/modulos': {
       id: '/_authenticated/projeto/$projectId/modulos'
       path: '/projeto/$projectId/modulos'
@@ -171,17 +251,26 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedProjetosRoute: typeof AuthenticatedProjetosRoute
+  AuthenticatedCadastrosClientesRoute: typeof AuthenticatedCadastrosClientesRoute
+  AuthenticatedCadastrosProdutosRoute: typeof AuthenticatedCadastrosProdutosRoute
+  AuthenticatedCadastrosUsuariosRoute: typeof AuthenticatedCadastrosUsuariosRoute
   AuthenticatedProjetoProjectIdCronogramaRoute: typeof AuthenticatedProjetoProjectIdCronogramaRoute
   AuthenticatedProjetoProjectIdDiarioRoute: typeof AuthenticatedProjetoProjectIdDiarioRoute
+  AuthenticatedProjetoProjectIdDocumentosRoute: typeof AuthenticatedProjetoProjectIdDocumentosRoute
   AuthenticatedProjetoProjectIdModulosRoute: typeof AuthenticatedProjetoProjectIdModulosRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedProjetosRoute: AuthenticatedProjetosRoute,
+  AuthenticatedCadastrosClientesRoute: AuthenticatedCadastrosClientesRoute,
+  AuthenticatedCadastrosProdutosRoute: AuthenticatedCadastrosProdutosRoute,
+  AuthenticatedCadastrosUsuariosRoute: AuthenticatedCadastrosUsuariosRoute,
   AuthenticatedProjetoProjectIdCronogramaRoute:
     AuthenticatedProjetoProjectIdCronogramaRoute,
   AuthenticatedProjetoProjectIdDiarioRoute:
     AuthenticatedProjetoProjectIdDiarioRoute,
+  AuthenticatedProjetoProjectIdDocumentosRoute:
+    AuthenticatedProjetoProjectIdDocumentosRoute,
   AuthenticatedProjetoProjectIdModulosRoute:
     AuthenticatedProjetoProjectIdModulosRoute,
 }
