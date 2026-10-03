@@ -7,4 +7,4 @@
 - [ ] Mapear os formatos do mapa, cronograma e diário no repositório Lalycza/Diario-de-Bordo.
 - [ ] Identificar e remover os três usuários @implanta.com do backend correto.
 - [ ] Projetar a opção de editar usuários no cadastro do repositório correto.
-- [ ] Trabalhar exclusivamente no repositório `Lalycza/Diario-de-Bordo` e no banco `zdiuuiqtztommsjrihzs`, sem alterar a entrada atual.
+- [ ] Trabalhar exclusivamente no repositório oficial `Lalycza/Diario-de-Bordo` e no banco oficial `zdiuuiqtztommsjrihzs`, sem alterar a entrada atual.
